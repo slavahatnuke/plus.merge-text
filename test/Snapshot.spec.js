@@ -65,7 +65,7 @@ describe('Snapshot', () => {
         let changes = mergeText.snapshot(a).merge(b);
 
         let md = mergeText.diff.toMarkdown(changes);
-        var expected = 'The  ~~red ~~ brown  __spotted __ fox  ~~jumped ~~  __leaped __ over the rolling log\n';
+        var expected = 'The  ~~red~~ brown  __spotted__ fox  ~~jumped~~  __leaped__ over the rolling log\n';
 
         assert.equal(md, expected);
     });

@@ -120,10 +120,10 @@ function toText(changes) {
 function toHtml(changes) {
     var mapper = {
         'delete': function (value) {
-            return '<del>' + value + '</del>';
+            return '<del>' + ('' + value).trim() + ' </del>';
         },
         'insert': function (value) {
-            return '<ins>' + value + '</ins>';
+            return '<ins>' + ('' + value).trim() + ' </ins>';
         }
     };
 
@@ -137,10 +137,10 @@ function toHtml(changes) {
 function toMarkdown(changes) {
     var mapper = {
         'delete': function (value) {
-            return ' ~~' + value + '~~ ';
+            return ' ~~' + ('' + value).trim() + '~~ ';
         },
         'insert': function (value) {
-            return ' __' + value + '__ ';
+            return ' __' + ('' + value).trim() + '__ ';
         }
     };
 
