@@ -66,7 +66,14 @@ module.exports = class Snapshot {
                 continue;
             }
 
-            // console.log('>> mainChange', mainChange);
+            if (!otherUpdates.length) {
+                if (mainChange) {
+                    result.push(mainChange);
+                }
+
+                mainUpdate.current++;
+                continue;
+            }
 
             for (var i = 0; i < otherUpdates.length; i++) {
 
@@ -78,6 +85,8 @@ module.exports = class Snapshot {
                     change = update.diff[update.current] || null
                 }
 
+
+                // console.log('>>> change', change);
                 if (mainChange && change) {
                     if (mainChange.type == 'delete' && change.type == 'origin') {
                         result.push(mainChange);
@@ -85,6 +94,10 @@ module.exports = class Snapshot {
 
                     if (mainChange.type == 'origin' && change.type == 'delete') {
                         result.push(change);
+                    }
+
+                    if (mainChange.type == 'origin' && change.type == 'origin') {
+                        result.push(mainChange);
                     }
 
                     mainUpdate.current++;

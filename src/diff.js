@@ -49,7 +49,7 @@ function diffString(o, n) {
                 resultString.push({type: 'insert', value: escape(out.n[i]) + nSpace[i]});
             } else {
 
-                resultString.push({type: 'origin', value: " " + out.n[i].text + nSpace[i]});
+                resultString.push({type: 'origin', value: out.n[i].text + nSpace[i]});
 
                 var pre = "";
 
@@ -116,5 +116,42 @@ function toText(changes) {
         .join('');
 }
 
+
+function toHtml(changes) {
+    var mapper = {
+        'delete': function (value) {
+            return '<del>' + value + '</del>';
+        },
+        'insert': function (value) {
+            return '<ins>' + value + '</ins>';
+        }
+    };
+
+    return changes
+        .map(function (item) {
+            return mapper[item.type] ? mapper[item.type](item.value) : item.value;
+        })
+        .join('');
+}
+
+function toMarkdown(changes) {
+    var mapper = {
+        'delete': function (value) {
+            return ' ~~' + value + '~~ ';
+        },
+        'insert': function (value) {
+            return ' __' + value + '__ ';
+        }
+    };
+
+    return changes
+        .map(function (item) {
+            return mapper[item.type] ? mapper[item.type](item.value) : item.value;
+        })
+        .join('');
+}
+
 module.exports.diffString = diffString;
 module.exports.toText = toText;
+module.exports.toHtml = toHtml;
+module.exports.toMarkdown = toMarkdown;
