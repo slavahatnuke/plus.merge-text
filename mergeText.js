@@ -240,8 +240,6 @@ Snapshot.prototype = {
                     change = update.diff[update.current] || null
                 }
 
-
-                // console.log('>>> change', change);
                 if (mainChange && change) {
                     if (mainChange.type == 'delete' && change.type == 'origin') {
                         result.push(mainChange);
@@ -253,6 +251,10 @@ Snapshot.prototype = {
 
                     if (mainChange.type == 'origin' && change.type == 'origin') {
                         result.push(mainChange);
+
+                        if (mainChange.value !== change.value) {
+                            result.push(change);
+                        }
                     }
 
                     mainUpdate.current++;
@@ -273,8 +275,6 @@ Snapshot.prototype = {
         // console.log('result', result);
         // console.log('\n');
         // console.log('\n');
-
-        // console.log(require('util').inspect(diffs, {depth: null}));
 
         return result;
     },

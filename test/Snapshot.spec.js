@@ -4,7 +4,7 @@ var assert = require('assert');
 var mergeText = require('../mergeText');
 
 describe('Snapshot', () => {
-
+    
     it('toString', () => {
         let text = 'Hello\nWorld\nOK';
 
@@ -104,11 +104,31 @@ describe('Snapshot', () => {
         assert.equal(snapshot.toString(), 'Hello OK\nworld\n');
         assert.equal(snapshot.toMarkdown(), 'Hello  ~~World~~  __OK__  __world__ ');
     });
-    //
-    // it('case1', () => {
-    //     let snapshot = mergeText.snapshot('Hello World').apply('World OK', ' Hello C');
-    //     assert.equal(snapshot.toString(), '');
-    // });
+
+    it('case to join origins', () => {
+        let snapshot = mergeText.snapshot('Hello World').apply('World OK', 'Hello So-So');
+        assert.equal(snapshot.toString(), 'Hello World OK\nSo-So\n');
+    });
+
+    it('case to replace origins 1', () => {
+        let snapshot = mergeText.snapshot('Hello World').apply('Hello World OK', 'Hello New York OK');
+        assert.equal(snapshot.toString(), 'Hello New York OK\nOK\n');
+    });
+
+    it('case to replace origins 2', () => {
+        let snapshot = mergeText.snapshot('Hello World').apply('Hello Ukraine OK', 'Hello New York OK');
+        assert.equal(snapshot.toString(), 'Hello New York OK\nUkraine OK\n');
+    });
+
+    it('case to replace origins 3 // merged version', () => {
+        let snapshot = mergeText.snapshot('Hello World OK').apply('Hello Ukraine OK', 'Hello New York OK');
+        assert.equal(snapshot.toString(), 'Hello New York Ukraine OK\n');
+    });
+
+    it('case to replace origins 4 // merged version and first word was removed', () => {
+        let snapshot = mergeText.snapshot('World Hello OK').apply('Hello Ukraine OK', 'Hello New York OK');
+        assert.equal(snapshot.toString(), 'Hello New York Ukraine OK\n');
+    });
 
 
 });
