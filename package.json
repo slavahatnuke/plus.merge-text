@@ -1,0 +1,33 @@
+{
+  "name": "plus.merge-text",
+  "version": "0.0.1",
+  "description": "Merge text tool with diffs and snapshots",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec",
+    "test.watch": "mocha -w -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slavahatnuke/plus.merge-text.git"
+  },
+  "keywords": [
+    "merge",
+    "text",
+    "snapshot"
+  ],
+  "author": "slava hatnuke, +1G",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slavahatnuke/plus.merge-text/issues"
+  },
+  "homepage": "https://github.com/slavahatnuke/plus.merge-text#readme",
+  "dependencies": {
+    "deep-diff": "^0.3.4",
+    "jshashes": "^1.0.6",
+    "node-diff": "^0.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0"
+  }
+}
