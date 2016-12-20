@@ -48,10 +48,7 @@ function diffString(o, n) {
             if (out.n[i].text == null) {
                 resultString.push({type: 'insert', value: escape(out.n[i]) + nSpace[i]});
             } else {
-
                 resultString.push({type: 'origin', value: out.n[i].text + nSpace[i]});
-
-                var pre = "";
 
                 for (n = out.n[i].row + 1; n < out.o.length && out.o[n].text == null; n++) {
                     resultString.push({type: 'delete', value: escape(out.o[n]) + oSpace[n]});
