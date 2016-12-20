@@ -183,21 +183,25 @@ Snapshot.prototype = {
     },
 
     merge: function (updates) {
+        var self = this;
+
         updates = Array.isArray(updates) ? updates : Array.prototype.slice.call(arguments);
 
         if (!updates.length) {
-            return diff(this.text, this.text);
+            return diff(self.text, self.text);
         }
 
         updates = updates
-            .map((update, idx) => {
+            .map(function (update, idx) {
                 return {
                     id: idx,
-                    diff: diff(this.text, update),
+                    diff: diff(self.text, update),
                     current: 0
                 };
             })
-            .sort((a, b) => a.diff.length >= b.diff.length ? -1 : 1);
+            .sort(function (a, b) {
+                return a.diff.length >= b.diff.length ? -1 : 1;
+            });
 
         var mainUpdate = updates[0];
 

@@ -5,7 +5,12 @@
   "main": "./mergeText.js",
   "scripts": {
     "test": "mocha -R spec",
-    "test.watch": "mocha -w -R spec"
+    "test.watch": "mocha -w -R spec",
+    "build": "npm run build.module && npm run build.min.module && npm run build.dist && npm run build.min.dist",
+    "build.module": "webpack mergeText.js dist/mergeText.common.js",
+    "build.min.module": "webpack -p mergeText.js dist/mergeText.common.min.js",
+    "build.dist": "webpack --output-library-target=var --output-library=plusMergeText mergeText.js dist/mergeText.js",
+    "build.min.dist": "webpack -p --output-library-target=var --output-library=plusMergeText  mergeText.js dist/mergeText.min.js"
   },
   "repository": {
     "type": "git",
@@ -22,12 +27,16 @@
     "url": "https://github.com/slavahatnuke/plus.merge-text/issues"
   },
   "homepage": "https://github.com/slavahatnuke/plus.merge-text#readme",
-  "dependencies": {
-    "deep-diff": "^0.3.4",
-    "jshashes": "^1.0.6",
-    "node-diff": "^0.2.0"
-  },
+  "dependencies": {},
+
+  "pre-push": [
+    "test",
+    "build"
+  ],
+
   "devDependencies": {
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "pre-push": "^0.1.1",
+    "webpack": "^1.14.0"
   }
 }

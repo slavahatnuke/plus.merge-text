@@ -104,6 +104,11 @@ describe('Snapshot', () => {
         assert.equal(snapshot.toString(), 'Hello OK\nworld\n');
         assert.equal(snapshot.toMarkdown(), 'Hello  ~~World~~  __OK__  __world__ ');
     });
+    //
+    // it('case1', () => {
+    //     let snapshot = mergeText.snapshot('Hello World').apply('World OK', ' Hello C');
+    //     assert.equal(snapshot.toString(), '');
+    // });
 
 
 });
