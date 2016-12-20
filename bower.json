@@ -1,0 +1,16 @@
+{
+  "name": "plus.merge-text",
+  "description": "Merge text tool with diffs and snapshots",
+  "main": "./mergeText.js",
+  "authors": [
+    "slava hatnuke",
+    "+1G"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "merge",
+    "text",
+    "snapshot"
+  ],
+  "homepage": "https://github.com/slavahatnuke/plus.merge-text"
+}
