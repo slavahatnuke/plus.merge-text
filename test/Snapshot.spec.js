@@ -9,7 +9,7 @@ describe('Snapshot', () => {
         let text = 'Hello\nWorld\nOK';
 
         let snapshot = mergeText.snapshot(text);
-        assert.equal(text, snapshot.toString());
+        assert.equal(snapshot.toString(), text);
     });
 
     it('apply / simple update', () => {
@@ -21,7 +21,7 @@ describe('Snapshot', () => {
 
         let snapshot2 = snapshot.apply(update1, update2);
 
-        assert.equal('Hello-up\nWorld-up\n', snapshot2.toString());
+        assert.equal(snapshot2.toString(), 'Hello-up\nWorld-up\n');
     });
 
     it('apply / new lines', () => {
@@ -32,7 +32,7 @@ describe('Snapshot', () => {
         let update2 = '\n\nHello\nWorld';
 
         let snapshot2 = snapshot.apply(update1, update2);
-        assert.equal('\n\n\n\nHello\nWorld\n', snapshot2.toString());
+        assert.equal(snapshot2.toString(), '\n\n\n\nHello\nWorld\n');
     });
 
     it('original test with text', () => {
@@ -42,27 +42,32 @@ describe('Snapshot', () => {
         let snapshot = mergeText.snapshot(a);
         let snapshot2 = snapshot.apply(b);
 
-        assert.equal(b + '\n', snapshot2.toString());
+        var expected = b + '\n';
+        assert.equal(snapshot2.toString(), expected);
     });
 
-    it('original test with html', () => {
+    it('original merge with html', () => {
         let a = 'The red brown fox jumped over the rolling log';
         let b = 'The brown spotted fox leaped over the rolling log';
 
         let changes = mergeText.snapshot(a).merge(b);
 
         let html = mergeText.diff.toHtml(changes);
-        assert.equal('The <del>red </del>brown <ins>spotted </ins>fox <del>jumped </del><ins>leaped </ins>over the rolling log\n', html);
+        var expected = 'The <del>red </del>brown <ins>spotted </ins>fox <del>jumped </del><ins>leaped </ins>over the rolling log\n';
+
+        assert.equal(html, expected);
     });
 
-    it('original test with markdown', () => {
+    it('original merge with markdown', () => {
         let a = 'The red brown fox jumped over the rolling log';
         let b = 'The brown spotted fox leaped over the rolling log';
 
         let changes = mergeText.snapshot(a).merge(b);
 
         let md = mergeText.diff.toMarkdown(changes);
-        assert.equal('The  ~~red ~~ brown  __spotted __ fox  ~~jumped ~~  __leaped __ over the rolling log\n', md);
+        var expected = 'The  ~~red ~~ brown  __spotted __ fox  ~~jumped ~~  __leaped __ over the rolling log\n';
+
+        assert.equal(md, expected);
     });
 
 });
