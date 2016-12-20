@@ -2,7 +2,7 @@
   "name": "plus.merge-text",
   "version": "0.0.1",
   "description": "Merge text tool with diffs and snapshots",
-  "main": "index.js",
+  "main": "./mergeText.js",
   "scripts": {
     "test": "mocha -R spec",
     "test.watch": "mocha -w -R spec"
