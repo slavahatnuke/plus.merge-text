@@ -1,6 +1,6 @@
 {
   "name": "plus.merge-text",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Merge text tool with diffs and snapshots",
   "main": "./mergeText.js",
   "scripts": {

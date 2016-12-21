@@ -112,7 +112,7 @@ function toText(changes) {
         .map(function (item) {
             return item.value;
         })
-        .join('');
+        .join('').trim();
 }
 
 
@@ -130,7 +130,7 @@ function toHtml(changes) {
         .map(function (item) {
             return mapper[item.type] ? mapper[item.type](item.value) : item.value;
         })
-        .join('');
+        .join('').trim();
 }
 
 function toMarkdown(changes) {
@@ -147,12 +147,14 @@ function toMarkdown(changes) {
         .map(function (item) {
             return mapper[item.type] ? mapper[item.type](item.value) : item.value;
         })
-        .join('');
+        .join('').trim();
 }
 
 function Snapshot(text, changes) {
     this.text = text;
     this.changes = changes || [];
+    // this.logEnabled = true;
+    this.logEnabled = false;
 }
 
 
@@ -170,6 +172,18 @@ function Snapshot_rollInInserts(update, result) {
     return hasChanges;
 }
 
+function Snapshot_normalizeLastChange(update) {
+    if (update.diff.length) {
+        var lastChange = update.diff[update.diff.length - 1];
+
+        if (/\n$/.test(lastChange.value)) {
+            lastChange.value = ('' + lastChange.value).replace(/\n+$/, ' ');
+        }
+    }
+
+    return update;
+}
+
 Snapshot.prototype = {
     apply: function (updates) {
         updates = Array.isArray(updates) ? updates : Array.prototype.slice.call(arguments);
@@ -182,6 +196,11 @@ Snapshot.prototype = {
         return new Snapshot(toText(changes), changes);
     },
 
+    log: function () {
+        if(this.logEnabled) {
+            console.log.apply(console, arguments);
+        }
+    },
     merge: function (updates) {
         var self = this;
 
@@ -203,14 +222,19 @@ Snapshot.prototype = {
                 return a.diff.length >= b.diff.length ? -1 : 1;
             });
 
-        var mainUpdate = updates[0];
+        var mainUpdate = Snapshot_normalizeLastChange(updates[0]);
 
-        var otherUpdates = updates.filter(function (item) {
-            return item !== mainUpdate;
-        });
+        var otherUpdates = updates
+            .filter(function (item) {
+                return item !== mainUpdate;
+            })
+            .map(function (update) {
+                return Snapshot_normalizeLastChange(update);
+            });
 
-        // console.log('main update', require('util').inspect(mainUpdate, {depth: null}));
-        // console.log('other updates', require('util').inspect(otherUpdates, {depth: null}));
+
+        self.log('main update', require('util').inspect(mainUpdate, {depth: null}));
+        self.log('other updates', require('util').inspect(otherUpdates, {depth: null}));
 
         var result = [];
 
@@ -252,7 +276,10 @@ Snapshot.prototype = {
                     if (mainChange.type == 'origin' && change.type == 'origin') {
                         result.push(mainChange);
 
-                        if (mainChange.value !== change.value) {
+                        var mainValue = ('' + mainChange.value).trim();
+                        var changeValue = ('' + change.value).trim();
+
+                        if (mainValue !== changeValue) {
                             result.push(change);
                         }
                     }
@@ -272,9 +299,9 @@ Snapshot.prototype = {
             }
         }
 
-        // console.log('result', result);
-        // console.log('\n');
-        // console.log('\n');
+        self.log('result', result);
+        // self.log('\n');
+        // self.log('\n');
 
         return result;
     },
